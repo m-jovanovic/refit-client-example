@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,21 +27,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/posts/{id}", async (int id, IBlogApi api) =>
-    await api.GetPostAsync(id));
-
 app.MapGet("/posts", async (int? userId, IBlogApi api) =>
     await api.GetPostsAsync(userId));
 
+app.MapGet("/posts/{id:int}", async (int id, IBlogApi api) =>
+    await api.GetPostAsync(id));
+
+app.MapGet("/posts/{id:int}/comments", async (int id, IBlogApi api) =>
+    await api.GetPostCommentsAsync(id));
+
 app.MapPost("/posts", async ([FromBody] Post post, IBlogApi api) =>
-await api.CreatePostAsync(post));
+    await api.CreatePostAsync(post));
 
-app.MapPut("/posts/{id}", async (int id, [FromBody] Post post, IBlogApi api) =>
-await api.UpdatePostAsync(id, post));
+app.MapPut("/posts/{id:int}", async (int id, [FromBody] Post post, IBlogApi api) =>
+    await api.UpdatePostAsync(id, post));
 
-app.MapDelete("/posts/{id}", async (int id, IBlogApi api) =>
+app.MapDelete("/posts/{id:int}", async (int id, IBlogApi api) =>
     await api.DeletePostAsync(id));
-
 
 app.UseHttpsRedirection();
 

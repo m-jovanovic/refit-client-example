@@ -2,11 +2,14 @@ using Refit;
 
 public interface IBlogApi
 {
+    [Get("/posts")]
+    Task<List<Post>> GetPostsAsync([Query] int? userId);
+
     [Get("/posts/{id}")]
     Task<Post> GetPostAsync(int id);
 
-    [Get("/posts")]
-    Task<List<Post>> GetPostsAsync(int? userId);
+    [Get("/posts/{id}/comments")]
+    Task<List<Comment>> GetPostCommentsAsync(int id);
 
     [Post("/posts")]
     Task<Post> CreatePostAsync([Body] Post post);
