@@ -6,7 +6,7 @@ public interface IBlogApi
     Task<Post> GetPostAsync(int id);
 
     [Get("/posts")]
-    Task<List<Post>> GetPostsAsync();
+    Task<List<Post>> GetPostsAsync(int? userId);
 
     [Post("/posts")]
     Task<Post> CreatePostAsync([Body] Post post);
